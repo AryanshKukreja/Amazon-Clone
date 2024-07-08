@@ -25,7 +25,7 @@ mongoose
     console.log(e);
   });
 
-app.listen(PORT, "192.168.0.103", () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Connected at port ${PORT}`);
 });
 

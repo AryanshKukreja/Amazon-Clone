@@ -2,7 +2,11 @@ import 'dart:convert';
 
 import 'package:amazon_clone_final/constants/error_handling.dart';
 import 'package:amazon_clone_final/constants/utils.dart';
+import 'package:amazon_clone_final/features/home/screens/home_screen.dart';
+import 'package:amazon_clone_final/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants/global_variables.dart';
 import '../../../models/user.dart';
 import 'package:http/http.dart' as http;
@@ -64,11 +68,16 @@ class AuthService {
         },
       );
 
-      print(res.body);
       httpErrorHandle(
         response: res,
         context: context,
-        onSuccess: () {
+        onSuccess: ()async {
+          SharedPreferences prefs= await SharedPreferences.getInstance();
+          Provider.of<UserProvider>(context, listen:false).setUser(res.body);
+          await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
+          Navigator.pushNamedAndRemoveUntil(
+              context,
+              HomeScreen.routeName, (route) => false);
           // Navigate to home screen or perform other actions
         },
       );

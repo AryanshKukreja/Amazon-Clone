@@ -38,6 +38,13 @@ void signUpUser() {
     );
 }
 
+void signInUser() {
+  authService.signInUser(
+      context: context,
+      email: _emailController.text,
+      password: _passwordController.text,
+  );
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,7 +139,7 @@ void signUpUser() {
                 padding: const EdgeInsets.all(8),
                 color: GlobalVariables.backgroundColor,
                 child: Form(
-                  key: _signUpFormKey,
+                  key: _signInFormKey,
                   child: Column(
                     children: [
                       CustomTextfield(
@@ -147,9 +154,11 @@ void signUpUser() {
                       const SizedBox(height: 10),
                       CustomButton(
                         text: 'Sign In',
-                        onTap: () {},
-                        backgroundColor: GlobalVariables.secondaryColor,// Set the background color to orange
-                        textColor: GlobalVariables.backgroundColor, // Set the text color to white
+                        onTap: () {
+                          if (_signInFormKey.currentState!.validate()) {
+                            signInUser();
+                          }
+                        },// Set the text color to white
                       ),
                     ],
                   ),
