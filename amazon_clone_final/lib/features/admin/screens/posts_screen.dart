@@ -1,10 +1,11 @@
-import "package:amazon_clone_final/features/account/widgets/single_product.dart";
-import "package:amazon_clone_final/features/admin/screens/add_product_screen.dart";
-import "package:amazon_clone_final/features/admin/services/admin_service.dart";
-import "package:flutter/material.dart";
 
-import "../../../common/widgets/loader.dart";
-import "../../../models/product.dart";
+import 'package:flutter/material.dart';
+
+import '../../../common/widgets/loader.dart';
+import '../../../models/product.dart';
+import '../../account/widgets/single_product.dart';
+import '../services/admin_service.dart';
+import 'add_product_screen.dart';
 
 class PostsScreen extends StatefulWidget {
   const PostsScreen({Key? key}) : super(key: key);
@@ -57,7 +58,7 @@ class _PostsScreenState extends State<PostsScreen> {
           return Column(
             children: [
               SizedBox(
-                height: 120,
+                height: 140,
                 child: SingleProduct(
                   image: productData.images[0],
                 ),

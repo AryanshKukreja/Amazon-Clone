@@ -1,16 +1,16 @@
 import 'dart:convert';
+
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-
-import 'package:amazon_clone_final/constants/global_variables.dart';
-import 'package:amazon_clone_final/providers/user_provider.dart';
-import 'package:amazon_clone_final/models/user.dart';
-
 import '../../../common/widgets/bottom_bar.dart';
 import '../../../constants/error_handling.dart';
+import '../../../constants/global_variables.dart';
 import '../../../constants/utils.dart';
+import '../../../models/user.dart';
+import '../../../providers/user_provider.dart';
 
 class AuthService {
   // sign up user
@@ -29,7 +29,7 @@ class AuthService {
         address: '',
         type: '',
         token: '',
-        cart:[],
+        cart: [],
       );
 
       http.Response res = await http.post(
@@ -79,9 +79,10 @@ class AuthService {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           Provider.of<UserProvider>(context, listen: false).setUser(res.body);
           await prefs.setString('x-auth-token', jsonDecode(res.body)['token']);
-          Navigator.pushNamedAndRemoveUntil(context,
-              BottomBar.routeName,
-              (route) => false,
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            BottomBar.routeName,
+                (route) => false,
           );
         },
       );

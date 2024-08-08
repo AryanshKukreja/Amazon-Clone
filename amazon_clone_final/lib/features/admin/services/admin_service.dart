@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:amazon_clone_final/constants/error_handling.dart';
-import 'package:amazon_clone_final/constants/utils.dart';
-import 'package:amazon_clone_final/providers/user_provider.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+
+import '../../../constants/error_handling.dart';
 import '../../../constants/global_variables.dart';
+import '../../../constants/utils.dart';
 import '../../../models/order.dart';
 import '../../../models/product.dart';
+import '../../../providers/user_provider.dart';
 import '../models/sales.dart';
 
 class AdminServices {
@@ -130,6 +129,7 @@ class AdminServices {
       showSnackBar(context, e.toString());
     }
   }
+
   Future<List<Order>> fetchAllOrders(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     List<Order> orderList = [];
@@ -160,6 +160,7 @@ class AdminServices {
     }
     return orderList;
   }
+
   void changeOrderStatus({
     required BuildContext context,
     required int status,
@@ -181,23 +182,20 @@ class AdminServices {
         }),
       );
 
-
       httpErrorHandle(
         response: res,
         context: context,
-        onSuccess: () {
-          onSuccess();
-        },
+        onSuccess: onSuccess,
       );
-    }catch (e) {
+    } catch (e) {
       showSnackBar(context, e.toString());
     }
   }
 
-  Future<Map<String,dynamic>> getEarnings(BuildContext context) async {
+  Future<Map<String, dynamic>> getEarnings(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     List<Sales> sales = [];
-    int totalEarning=0;
+    int totalEarning = 0;
     try {
       http.Response res =
       await http.get(Uri.parse('$uri/admin/analytics'), headers: {
@@ -209,14 +207,14 @@ class AdminServices {
         response: res,
         context: context,
         onSuccess: () {
-          var response =jsonDecode(res.body);
-          totalEarning =response['totalEarnings'];
+          var response = jsonDecode(res.body);
+          totalEarning = response['totalEarnings'];
           sales = [
-            Sales('Mobiles',response['mobileEarnings']),
-            Sales('Essentials',response['essentialEarnings']),
-            Sales('Appliances',response['applianceEarnings']),
-            Sales('Books',response['bookEarnings']),
-            Sales('Fashion',response['fashionEarnings']),
+            Sales('Mobiles', response['mobileEarnings']),
+            Sales('Essentials', response['essentialEarnings']),
+            Sales('Books', response['booksEarnings']),
+            Sales('Appliances', response['applianceEarnings']),
+            Sales('Fashion', response['fashionEarnings']),
           ];
         },
       );
@@ -224,8 +222,8 @@ class AdminServices {
       showSnackBar(context, e.toString());
     }
     return {
-      'sales':sales,
-      'totalEarnings':totalEarning,
+      'sales': sales,
+      'totalEarnings': totalEarning,
     };
   }
 }

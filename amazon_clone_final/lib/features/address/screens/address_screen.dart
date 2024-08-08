@@ -74,6 +74,8 @@ class _AddressScreenState extends State<AddressScreen> {
       showSnackBar(context, 'Error');
     }
     print(addressToBeUsed);
+    dynamic res='';
+    onGooglePayResult(res);
     }
 
   Widget build(BuildContext context) {
